@@ -7,12 +7,23 @@ arch=('x86_64')
 url="https://github.com/jlcodes99/cockpit-tools"
 license=('MIT')
 depends=('gtk3' 'webkit2gtk-4.1' 'libnm' 'libayatana-appindicator')
+makedepends=('curl' 'binutils')
 provides=('cockpit-tools')
 conflicts=('cockpit-tools')
-source=("${pkgname}-${pkgver}.deb::https://github.com/jlcodes99/cockpit-tools/releases/download/v${pkgver}/Cockpit.Tools_${pkgver}_amd64.deb")
-sha256sums=('8ca74062433037ed5f7b9d5c8ecf123c1722c9f5cabffa4bc562dbba88b0a59f')
+source=()
+sha256sums=()
+
+pkgver() {
+  curl -s "https://api.github.com/repos/jlcodes99/cockpit-tools/releases/latest" | grep -oP '"tag_name": "v\K[^"]+'
+}
+
+build() {
+  curl -L -o "${srcdir}/Cockpit.Tools_${pkgver}_amd64.deb" "https://github.com/jlcodes99/cockpit-tools/releases/download/v${pkgver}/Cockpit.Tools_${pkgver}_amd64.deb"
+  cd "$srcdir"
+  ar x "Cockpit.Tools_${pkgver}_amd64.deb" data.tar.gz
+}
 
 package() {
-  # Extract data.tar.gz which contains the filesystem structure
+  cd "$srcdir"
   tar -xzf data.tar.gz -C "${pkgdir}"
 }
