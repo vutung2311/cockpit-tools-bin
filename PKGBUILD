@@ -4,12 +4,15 @@
 #
 # Build from the fork on GitHub (default):
 #   makepkg -si   (package name kept as cockpit-tools-bin so it upgrades in place)
+# AUR also has a cockpit-tools-bin (upstream's unpatched binary). epoch=999 keeps this
+# build newer than any AUR version, so paru -Syu never offers to replace it.
 # Build from local commits instead (committed work only, not the working tree):
 #   COCKPIT_TOOLS_REPO=/home/tung/Git/cockpit-tools makepkg -si
 # prepare() refuses to build if a token-safety patch is missing; check() runs the
 # hardening tests (skipped by --nocheck, so don't use it).
 pkgname=cockpit-tools-bin
-pkgver=1.3.61.r1495.g13ca8d39
+epoch=999
+pkgver=1.3.68.r1522.g9f9a4d7b
 pkgrel=1
 pkgdesc="Universal AI IDE account manager (built from source, token-safety hardened fork)"
 arch=('x86_64')
@@ -91,7 +94,7 @@ prepare() {
   _hardening_checks
   export npm_config_cache="$srcdir/npm-cache"
   # electron is only a devDependency used by an optional runtime helper; skip its binary.
-  ELECTRON_SKIP_BINARY_DOWNLOAD=1 npm ci --no-audit --no-fund
+  ELECTRON_SKIP_BINARY_DOWNLOAD=1 npm ci --no-audit --no-fund --allow-remote=all
 
   # Upstream's updater points at jlcodes99 releases and would offer to replace this
   # build with the unpatched upstream binary; disable it for this package.
