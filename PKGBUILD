@@ -12,7 +12,7 @@
 # hardening tests (skipped by --nocheck, so don't use it).
 pkgname=cockpit-tools-bin
 epoch=999
-pkgver=1.3.68.r1522.g9f9a4d7b
+pkgver=1.3.70.r1545.gfa72cec8
 pkgrel=1
 pkgdesc="Universal AI IDE account manager (built from source, token-safety hardened fork)"
 arch=('x86_64')
@@ -110,7 +110,12 @@ build() {
   cd cockpit-tools
   export npm_config_cache="$srcdir/npm-cache"
   export CARGO_TARGET_DIR="$srcdir/cockpit-tools/target"
-  npx tauri build --bundles deb --config "$srcdir/tauri.pkgbuild.conf.json"
+  # Dependencies are reused across builds, but the app crate itself is recompiled from
+  # scratch on every version. Compile it incrementally (and in more codegen units) so a
+  # few new commits only rebuild what changed; dependencies stay fully optimized.
+  npx tauri build --bundles deb --config "$srcdir/tauri.pkgbuild.conf.json" -- \
+    --config 'profile.release.package.cockpit-tools.incremental=true' \
+    --config 'profile.release.package.cockpit-tools.codegen-units=256'
 }
 
 # The hardening tests. cargo test exits 0 when a filter matches nothing, so also
