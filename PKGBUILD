@@ -12,7 +12,7 @@
 # hardening tests (skipped by --nocheck, so don't use it).
 pkgname=cockpit-tools-bin
 epoch=999
-pkgver=1.3.70.r1545.gfa72cec8
+pkgver=1.3.78.r1628.g6a894204
 pkgrel=1
 pkgdesc="Universal AI IDE account manager (built from source, token-safety hardened fork)"
 arch=('x86_64')
@@ -61,7 +61,7 @@ _hardening_checks() {
   _require src-tauri/src/modules/websocket.rs 'accept_hdr_async(stream, check_ws_origin)' "WebSocket Origin check"
   _require src-tauri/src/modules/config.rs 'write_secret_string_atomic(&status_path' "server.json written 0600"
   _require src-tauri/src/modules/account.rs 'restrict_data_dir_permissions(&data_dir)' "data dir 0700"
-  _require src-tauri/src/modules/kiro_oauth.rs 'normalize_idc_region(Some(region.as_str()))' "Kiro refresh region validated"
+  _require src-tauri/src/modules/kiro_oauth.rs 'normalize_idc_region(resolve_idc_region(auth_token, account).as_deref())' "Kiro refresh region validated"
   _require src-tauri/src/modules/webdav_sync.rs 'ensure_secure_transport(&normalized_base_url)' "WebDAV https-only"
   _require src-tauri/src/modules/webdav_domain.rs 'url::Url::parse(trimmed)' "WebDAV allowlist host parsed with url crate"
   _require src-tauri/src/modules/diagnostics.rs 'BEARER_SCHEME_RE' "Sentry bearer redaction"

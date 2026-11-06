@@ -1,6 +1,6 @@
 pkgbase = cockpit-tools-bin
 	pkgdesc = Universal AI IDE account manager (built from source, token-safety hardened fork)
-	pkgver = 1.3.70.r1545.gfa72cec8
+	pkgver = 1.3.78.r1628.g6a894204
 	pkgrel = 1
 	epoch = 999
 	url = https://github.com/vutung2311/cockpit-tools
