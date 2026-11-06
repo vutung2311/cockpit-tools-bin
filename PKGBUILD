@@ -12,7 +12,7 @@
 # hardening tests (skipped by --nocheck, so don't use it).
 pkgname=cockpit-tools-bin
 epoch=999
-pkgver=1.3.78.r1628.g6a894204
+pkgver=1.3.79.r1705.gad4587b2
 pkgrel=1
 pkgdesc="Universal AI IDE account manager (built from source, token-safety hardened fork)"
 arch=('x86_64')
